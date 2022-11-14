@@ -2,10 +2,11 @@ import gym
 from gym_chess import ChessEnvV1, ChessEnvV2
 
 
+#choose difficulty of the chess easy(3), medium(6), hard(9) ai will be determined from depth limit  
 # Shows state of board
 # Loop
     # Enter prompt for piece and move (requires correct move)
-        #turn input into touple of touples((6,0), (5,0))
+        #turn input into touple of touples ex ((6,0), (5,0))
         #turn into action
     # Apply move and show board
         #apply move to the board from the action
@@ -15,6 +16,7 @@ from gym_chess import ChessEnvV1, ChessEnvV2
             #need to make a utility function
             #Make the tree
                 #Nodes of board state(for utility function), move that was used to get there, and the minimax value
+                #stop at dificulty value selected in the beggining 
             #start from bottom of the tree and then go upwards
             #you would look at children chose the one with the chosen minimax value then chose the move at that child node
         #turn move into action 
