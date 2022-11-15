@@ -1,5 +1,6 @@
 import gym
 from gym_chess import ChessEnvV1, ChessEnvV2
+from library import utilityFunction
 
 
 #choose difficulty of the chess easy(3), medium(6), hard(9) ai will be determined from depth limit  
@@ -13,7 +14,7 @@ from gym_chess import ChessEnvV1, ChessEnvV2
     # Then display ai is moving and generate ai’s move
         #print out something to show ai is moving
         #use minimax to generate move
-            #need to make a utility function
+            #need to make a utility function                                                                                            
             #Make the tree
                 #Nodes of board state(for utility function), move that was used to get there, and the minimax value
                 #stop at dificulty value selected in the beggining 
@@ -29,13 +30,10 @@ env = ChessEnvV2()
 env = gym.make('ChessVsSelf-v2')
 env.reset()
 
-currentState = env.state
+
 moves = env.possible_moves
 action = env.move_to_action(moves[0])
+currentState, reward, done, info = env.step(action)
 
-newState, reward, done, info = env.step(action)
 
-print(currentState)
-
-env.render()
-
+print(utilityFunction(currentState))
