@@ -52,4 +52,4 @@ def numify(letter):
         return 6
     elif letter == "h":
         return 7
-        
+
