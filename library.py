@@ -27,3 +27,29 @@ def utilityFunction(boardState):
                 count -= 1
             
     return count
+
+def inputToTouple(inpStr):
+    x = numify(inpStr[0])
+    y = 8 - int(inpStr[1])
+
+    tup = (int(y), int(x))
+    return tup
+
+def numify(letter):
+    if letter == "a":
+        return 0
+    elif letter == "b":
+        return 1
+    elif letter == "c":
+        return 2
+    elif letter == "d":
+        return 3
+    elif letter == "e":
+        return 4
+    elif letter == "f":
+        return 5
+    elif letter == "g":
+        return 6
+    elif letter == "h":
+        return 7
+        
