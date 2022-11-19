@@ -1,6 +1,7 @@
 import gym
 from gym_chess import ChessEnvV1, ChessEnvV2
 from library import utilityFunction, inputToTouple
+from minimaxTree import minimaxTree
 
 #choose difficulty of the chess easy(3), medium(6), hard(9) ai will be determined from depth limit  
 inp1 = input("What difficulty would you like to play at(Easy, Medium, Hard): ")
@@ -10,13 +11,33 @@ elif inp1 == "medium":
     difficulty = 6
 elif inp1 == "hard":
     difficulty = 9
-else:
-    inp1 = input("Please enter Easy, Medium, or Hard: ")
+
+
+def minimaxMove(env):
+    test = minimaxTree(env.state, difficulty)
+    test.generateTree(test.headNode, 0)
+    
+
+    # Then display ai is moving and generate ai’s move
+
+        #print out something to show ai is moving
+        #use minimax to generate move                                                                                    
+            #Make the tree
+                #Nodes of board state(for utility function), move that was used to get there, and the minimax value
+                #stop at dificulty value selected in the beggining 
+            #start from bottom of the tree and then go upwards
+            #you would look at children chose the one with the chosen minimax value then chose the move at that child node
+        #turn move into action 
+    # Show board after ai’s move
+        #apply move to the board from the action
+        #check to see if they won
+    
+    return env.possible_moves[0]
+    
+
 
 #Creates the environment 
-env = ChessEnvV2()
-env = gym.make('ChessVsSelf-v2')
-env.reset()
+env = ChessEnvV2(opponent=minimaxMove)
 
 # Shows state of board
 env.render()
@@ -34,23 +55,10 @@ while True:
     move = (t1, t2)
     #turns the move into an action 
     action = env.move_to_action(move)
-    
     # Apply move and checks to see if you won
     new_state, reward, done, info = env.step(action)
+
+    #check to see if you won 
     if done:
         print("Congradulations you won")
         break
-
-    # Then display ai is moving and generate ai’s move
-        #print out something to show ai is moving
-        #use minimax to generate move                                                                                    
-            #Make the tree
-                #Nodes of board state(for utility function), move that was used to get there, and the minimax value
-                #stop at dificulty value selected in the beggining 
-            #start from bottom of the tree and then go upwards
-            #you would look at children chose the one with the chosen minimax value then chose the move at that child node
-        #turn move into action 
-    # Show board after ai’s move
-        #apply move to the board from the action
-        #check to see if they won
-    
