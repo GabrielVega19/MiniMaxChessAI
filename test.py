@@ -1,10 +1,9 @@
-import gym
-from gym_chess import ChessEnvV1, ChessEnvV2
+l = [1, 2, 3, 4]
 
-def test(env):
-    return ((7, 4), (7, 4))
-    
+print(l)
 
-env = ChessEnvV2(opponent=test)
+l = [3]
+
+print(l)
 
 

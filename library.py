@@ -26,7 +26,7 @@ def utilityFunction(boardState):
             elif piece == -6:
                 count -= 1
             
-    return count
+    return count * -1
 
 def inputToTouple(inpStr):
     x = numify(inpStr[0])

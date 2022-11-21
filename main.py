@@ -14,8 +14,10 @@ elif inp1 == "hard":
 
 
 def minimaxMove(env):
-    test = minimaxTree(env.state, difficulty)
-    test.generateTree(test.headNode, 0)
+    tree = minimaxTree(env.state, difficulty)
+    tree.generateTree(tree.headNode, 0)
+    tree.runMiniMaxAlgorithm()
+    return tree.returnBestMove(env)
     
 
     # Then display ai is moving and generate ai’s move
@@ -31,8 +33,6 @@ def minimaxMove(env):
     # Show board after ai’s move
         #apply move to the board from the action
         #check to see if they won
-    
-    return env.possible_moves[0]
     
 
 
