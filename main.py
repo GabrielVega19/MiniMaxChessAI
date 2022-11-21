@@ -6,14 +6,16 @@ from minimaxTree import minimaxTree
 #choose difficulty of the chess easy(3), medium(6), hard(9) ai will be determined from depth limit  
 inp1 = input("What difficulty would you like to play at(Easy, Medium, Hard): ")
 if inp1 == "easy":
-    difficulty = 3
+    difficulty = 1
 elif inp1 == "medium":
-    difficulty = 6
+    difficulty = 2
 elif inp1 == "hard":
-    difficulty = 9
+    difficulty = 3
 
 
 def minimaxMove(env):
+    print("**********Your Move************")
+    env.render()
     tree = minimaxTree(env.state, difficulty)
     tree.generateTree(tree.headNode, 0)
     tree.runMiniMaxAlgorithm()
@@ -39,10 +41,11 @@ def minimaxMove(env):
 #Creates the environment 
 env = ChessEnvV2(opponent=minimaxMove)
 
-# Shows state of board
-env.render()
+
 # Loop untill win condition
 while True:
+    print("**********Thier Move************")
+    env.render()
     #Asks the user for input and then turns it into a move
     piece = input("Input which piece you want to move (ex. e2): ")
     while not len(piece) == 2:
@@ -57,7 +60,6 @@ while True:
     action = env.move_to_action(move)
     # Apply move and checks to see if you won
     new_state, reward, done, info = env.step(action)
-
     #check to see if you won 
     if done:
         print("Congradulations you won")
