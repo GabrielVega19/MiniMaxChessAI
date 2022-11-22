@@ -1,4 +1,4 @@
-#utility function for the board s
+#utility function for the board state that is passed in returns the value
 def utilityFunction(boardState):
     bs = boardState["board"]
     count = 0
@@ -25,9 +25,10 @@ def utilityFunction(boardState):
                 count += 1
             elif piece == -6:
                 count -= 1
-            
+    #because the utility function gets used for opponent we need to flip the sign of the value  
     return count * -1
 
+#takes in input from the user and turns it into a touple
 def inputToTouple(inpStr):
     x = numify(inpStr[0])
     y = 8 - int(inpStr[1])
@@ -35,6 +36,7 @@ def inputToTouple(inpStr):
     tup = (int(y), int(x))
     return tup
 
+#takes in letters from the user input and maps it to a value the library can use
 def numify(letter):
     if letter == "a":
         return 0
