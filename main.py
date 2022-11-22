@@ -6,15 +6,12 @@ from minimaxTree import minimaxTree
 #choose difficulty of the chess ai easy(2), medium(3), hard(4) behind the scened the difficulty will be determined by setting the depth limit to different values 
 inv = True
 while inv:
-    inp1 = input("What difficulty would you like to play at(Easy, Medium, Hard): ")
+    inp1 = input("What difficulty would you like to play at(easy, hard): ")
     if inp1 == "easy":
         difficulty = 2
         inv = False
-    elif inp1 == "medium":
-        difficulty = 3
-        inv = False
     elif inp1 == "hard":
-        difficulty = 4
+        difficulty = 3
         inv = False
 
 #this function is called by the library to preform the move of the opponent behind the scenes it runs the minimax algorithm 
@@ -54,7 +51,7 @@ while True:
 
     # Applys the action that was generated from user input to the board then passes to the opponents move 
     new_state, reward, done, info = env.step(action)
-    
+
     #check to see if you won 
     if done:
         print("Congradulations you won")
