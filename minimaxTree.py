@@ -29,10 +29,17 @@ class minimaxTree:
             fIndex = (self.maxDepth - 2) - i
             self.traverseLevel(self.headNode, fIndex, "max" if fIndex % 2 == 0 else "min")
 
-    #after the tree is generated and you have run the algorithm you can call this function to return the generated best move from the tree
+    #after the tree is generated and you have run the algorithm you can call this function to return the generated best move from the tree and if there
+    #is multiple children with the same minimax value then it choses one of them randomly 
     def returnBestMove(self, env):
-        bestMoveIndex = self.headNode.bestMove
-        return env.action_to_move(self.headNode.children[bestMoveIndex].action)
+        minimaxVal = self.headNode.minimaxValue
+        bestActions = []
+
+        for child in self.headNode.children:
+            if child.minimaxValue == minimaxVal:
+                bestActions.append(child.action)
+
+        return env.action_to_move(random.choice(bestActions))
         
     #this is used for debugging to print out the minimax values at a certain level in the tree (uses level order traversal with recursion)
     def printLevel(self, currentNode, level):
@@ -53,9 +60,9 @@ class minimaxTree:
         if level == 0:
             #if at the desired level it looks through children and the brings up the minimax value
             if mimx == "max":
-                currentNode.minimaxValue, currentNode.bestMove = max(currentNode.children)
+                currentNode.minimaxValue = max(currentNode.children)
             else:
-                currentNode.minimaxValue, currentNode.bestMove = min(currentNode.children)         
+                currentNode.minimaxValue = min(currentNode.children)         
             return
         elif level > 0:
             for child in currentNode.children:
@@ -74,14 +81,12 @@ class minimaxTree:
                 self.runUtilityAlgorithm(child, level - 1)
             
 #this class holds the information for the nodes of the tree that gets generated for the minimax algorithm each node stores a current state of the board,
-#the action/move that it took to generate the node, the minimax value which gets defaulted to -999, the index of the child with the calculated "best" move
-# from the algorithm, and its children nodes
+#the action/move that it took to generate the node, the minimax value which gets defaulted to -999, and its children nodes
 class node:
     def __init__(self, state, action):
         self.state = state
         self.action = action
         self.minimaxValue = -999
-        self.bestMove = -999
         self.children = []
     
     #this function iteratively generates all its children(one for each possible move from the current state of the board)
@@ -108,32 +113,22 @@ def nullmove(env):
             if board[rowInd][colInd] == 1 or board[rowInd][colInd] == -1:
                 return ((rowInd,colInd), (rowInd,colInd))
 
-#this is a helper function that takes in the children and then returns the highest minimax value out of all of them and the index of that child
-#if there is a tie then one of the index's of the child are chosen randomly 
+#this is a helper function that takes in the children and then returns the highest minimax value out of all of them
 def max(children):
     maxVal = -100
-    bestMoves = []
 
-    for i in range(len(children)):
-        if children[i].minimaxValue > maxVal:
-            maxVal = children[i].minimaxValue
-            bestMoves = [i]
-        elif children[i].minimaxValue == maxVal:
-            bestMoves.append(i)
-
-    return maxVal, random.choice(bestMoves)
+    for child in children:
+        if child.minimaxValue > maxVal:
+            maxVal = child.minimaxValue
+        
+    return maxVal
     
-#this is a helper function that takes in the children and then returns the lowest minimax value out of all of them and the index of that child
-#if there is a tie then one of the index's of the child are chosen randomly 
+#this is a helper function that takes in the children and then returns the lowest minimax value out of all of them
 def min(children):
     minVal = 100
-    bestMoves = []
 
-    for i in range(len(children)):
-        if children[i].minimaxValue < minVal:
-            minVal = children[i].minimaxValue
-            bestMoves = [i]
-        elif children[i].minimaxValue == minVal:
-            bestMoves.append(i)
+    for child in children:
+        if child.minimaxValue < minVal:
+            minVal = child.minimaxValue
 
-    return minVal, random.choice(bestMoves)
+    return minVal
