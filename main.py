@@ -2,11 +2,12 @@ import gym
 from gym_chess import ChessEnvV1, ChessEnvV2
 from library import utilityFunction, inputToTouple
 from minimaxTree import minimaxTree
+import random
 
 #choose difficulty of the chess ai easy(2), medium(3), hard(4) behind the scened the difficulty will be determined by setting the depth limit to different values 
 inv = True
 while inv:
-    inp1 = input("What difficulty would you like to play at(easy, hard): ")
+    inp1 = input("What difficulty would you like to run simulation at(easy, hard): ")
     if inp1 == "easy":
         difficulty = 2
         inv = False
@@ -14,45 +15,59 @@ while inv:
         difficulty = 3
         inv = False
 
-#this function is called by the library to preform the move of the opponent behind the scenes it runs the minimax algorithm 
-def minimaxMove(env):
-    print("**********Your Move************")
-    env.render()
-    tree = minimaxTree(env.state, difficulty)
-    tree.generateTree(tree.headNode, 0)
-    tree.runMiniMaxAlgorithm()
-    return tree.returnBestMove(env)   
+#vars to keep track of how many times each player won
+aiWins = 0
+randomWins = 0
+ties = 0
+movesToWin = []
 
-#Creates the environment and passes in the function for the opponent move calculation 
-env = ChessEnvV2(opponent=minimaxMove)
 
-# This is the main gameplay loop, It only stops when you or the opponent is calculated to have won 
-while True:
-    #prints out the initial state of the board on the first loop and then the opponents move on all other loops
-    print("**********Thier Move************")
-    env.render()
+#loops the simulation 30 times
+for i in range(100):
+    #Creates the environment and resets it inbetween turns
+    moves = 0
+    env = ChessEnvV2(opponent="none")
 
-    #Asks the user for input of which piece they want to move expects valid input for board
-    piece = input("Input which piece you want to move (ex. e2): ")
-    while not len(piece) == 2:
-        piece = input("Input which piece you want to move (ex. e2): ")
-    #turns the input into a touple
-    t1 = inputToTouple(piece)
-    #Asks the user for input of where they want to move it to 
-    space = input("Input where you want to move (ex. e2): ")
-    while not len(space) == 2:
-        space = input("Input where you want to move (ex. e2): ")
-    #turns the input into a touple
-    t2 = inputToTouple(space)
-    #turns the input touples into a touple for the library to use
-    move = (t1, t2)
-    #turns the move into an action which can be applied to the board
-    action = env.move_to_action(move)
+    # This is the main  loop, it will break when someone wins and the corrosponding counter will be incremented
+    while True:
+        #checks to see if ai wins
+        if env.possible_actions == []:
+            aiWins += 1
+            movesToWin.append(moves)
+            break   
 
-    # Applys the action that was generated from user input to the board then passes to the opponents move 
-    new_state, reward, done, info = env.step(action)
+        #choses a random move from all possible moves 
+        action = random.choice(env.possible_actions)
+        # Applys the action to the board then passes to the opponents move 
+        new_state, reward, done, info = env.step(action)
+        if done:
+            ties += 1
+            break
 
-    #check to see if you won 
-    if done:
-        print("Congradulations you won")
-        break
+        #begin ai move
+        #checks to see if random wins
+        if env.possible_actions == []:
+            randomWins += 1
+            break   
+
+        #initialize tree
+        tree = minimaxTree(env.state, difficulty)
+        #generate tree
+        tree.generateTree(tree.headNode, 0)
+        #run algorithm 
+        tree.runMiniMaxAlgorithm()
+        #turn best move into an action
+        action = env.move_to_action(tree.returnBestMove(env))
+        #applies the AI move
+        new_state, reward, done, info = env.step(action)
+        moves += 1
+        if done:
+            ties += 1
+            break
+
+
+print("After running the simukation 100 times")
+print("Times the AI won:", aiWins)
+print("Times the Random moves won:", randomWins)
+print("Times there was a tie:", ties)
+print("Moves it took the AI to win:", movesToWin)
