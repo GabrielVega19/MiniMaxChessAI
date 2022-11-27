@@ -23,7 +23,7 @@ movesToWin = []
 
 
 #loops the simulation 30 times
-for i in range(100):
+for i in range(5):
     #Creates the environment and resets it inbetween turns
     moves = 0
     env = ChessEnvV2(opponent="none")
@@ -41,7 +41,11 @@ for i in range(100):
         # Applys the action to the board then passes to the opponents move 
         new_state, reward, done, info = env.step(action)
         if done:
-            ties += 1
+            if moves == 150:
+                ties += 1
+            else:
+                aiWins += 1
+                movesToWin.append(moves)
             break
 
         #begin ai move
@@ -62,11 +66,15 @@ for i in range(100):
         new_state, reward, done, info = env.step(action)
         moves += 1
         if done:
-            ties += 1
+            if moves == 150:
+                ties += 1
+            else:
+                aiWins += 1
+                movesToWin.append(moves)
             break
 
 
-print("After running the simukation 100 times")
+print("After running the simukation 10 times")
 print("Times the AI won:", aiWins)
 print("Times the Random moves won:", randomWins)
 print("Times there was a tie:", ties)
